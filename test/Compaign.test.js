@@ -204,29 +204,28 @@ describe("Campaigns", () => {
 
     it("allow recipient receive ", async () => {
         const description = "Buy ink for the office";
-        const value = "100";
+        const value = "5000000000000000000";
 
         await campaign.methods.createRequest(description, value, accounts[0])
             .send({ from: accounts[0], gas: "1000000" });
         
-        await campaign.methods.contribute().send({ from: accounts[1], gas: "1000000", value: "1000"});
-        await campaign.methods.contribute().send({ from: accounts[2], gas: "1000000", value: "1000"});
+        await campaign.methods.contribute().send({ from: accounts[1], gas: "1000000", value: "2500000000000000000" });
+        await campaign.methods.contribute().send({ from: accounts[2], gas: "1000000", value: "2500000000000000000" });
 
         await campaign.methods.approveRequest(0).send({ from: accounts[1], gas: "1000000" });
         await campaign.methods.approveRequest(0).send({ from: accounts[2], gas: "1000000" });
 
-        const beforeCampaign = await web3.eth.getBalance(campaignAddress);
-        const beforeAccount = await web3.eth.getBalance(accounts[0]);
+        const beforeReceive = await web3.eth.getBalance(accounts[0]);
 
         await campaign.methods.finalizeRequest(0).send({ from: accounts[0], gas: "1000000"});
-        
-        const afterCampaign = await web3.eth.getBalance(campaignAddress);
-        const afterAccount = await web3.eth.getBalance(accounts[0]);
-        
-        const diff = beforeCampaign - (afterAccount - beforeAccount);
 
-        console.log(diff);
-        console.log(afterCampaign)
-        assert.equal(afterCampaign, 0);
+        const afterReceive = await web3.eth.getBalance(accounts[0]);
+
+        const convertedBefore = parseFloat(web3.utils.fromWei(beforeReceive, "ether"));
+        const convertedAfter = parseFloat(web3.utils.fromWei(afterReceive, "ether"));
+
+
+        assert(convertedAfter > convertedBefore);
+        assert(convertedAfter < 105);
     });
 });
