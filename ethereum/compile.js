@@ -30,7 +30,7 @@ fs.ensureDir(buildPath);
 
 for (let contract in output) {
     fs.outputJSONSync(
-        path.resolve(__dirname, "build", contract + ".json"),
+        path.resolve(__dirname, "build", `${contract}.json`),
         output[contract]
     );
 }
