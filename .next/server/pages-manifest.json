@@ -2,5 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/campaigns/requests": "pages/campaigns/requests.js"
+  "/campaigns/requests": "pages/campaigns/requests.js",
+  "/campaigns/show": "pages/campaigns/show.js",
+  "/": "pages/index.js"
 }
